@@ -1,5 +1,4 @@
 ![WS281x](https://github.com/uraimo/WS281x.swift/raw/master/logo.png)
-##WS281x.swift
 
 *A Swift library for WS2812x (WS2811,WS2812,WS2812B) RGB led strips, rings, sticks, matrixes, etc...*
 
@@ -12,15 +11,13 @@
 
 # Summary
 
-This simple library read the values produced by the MCP3008 10 bits SPI-driven ADC. This components is able to convert analogical signal (with a voltage range defined by Vref, most of the time you'll put Vref and Vdd to 5V) to an integer value between 0 and 1023. This kind of component is extremely useful for example for boards like the RaspberryPis that don't have their own analog input pins like an Arduino.
-
-![MCP3008 diagram](https://github.com/uraimo/MCP3008.swift/raw/master/mcp3008.png)
+...
 
 ## Supported Boards
 
-Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO): RaspberryPis, BeagleBones, C.H.I.P., etc...
+Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO) with pattern-based PWM signal generator, at the moment only RaspberryPis.
 
-To use this library, you'll need a Linux ARM board with Swift 3.x.
+To use this library, you'll need Swift 3.x.
 
 The example below will use a RaspberryPi 2 board but you can easily modify the example to use one the the other supported boards, a full working demo projects for the RaspberryPi2 is available in the `Examples` directory.
 
@@ -30,18 +27,10 @@ The first thing we need to do is to obtain an instance of `SPIOutput` from Swift
 
 ```swift
 import SwiftyGPIO
-import MCP3008
-
-let spis = SwiftyGPIO.hardwareSPIs(for:.RaspberryPi2)!
-let spi = spis[0]
-let m = MCP3008(spi)
+import WS281x
 ```
 
-Then use `readValue` to read the current converted value (0...1023) from one of the analog inputs:
-
-```swift
-m.readValue(0) //CH0 pin
-```
+...
 
 ## Installation
 
@@ -53,18 +42,18 @@ Once your board runs Swift, if your version support the Swift Package Manager, y
   let package = Package(
       name: "MyProject",
       dependencies: [
-    .Package(url: "https://github.com/uraimo/MCP3008.swift.git", majorVersion: 1),
+    .Package(url: "https://github.com/uraimo/WS281x.swift.git", majorVersion: 1),
     ...
       ]
       ...
   ) 
 ```
 
-The directory `Examples` contains sample projects that uses SPM, compile it and run the sample with `./.build/debug/TestMCP`.
+The directory `Examples` contains sample projects that uses SPM, compile it and run the sample with `./.build/debug/TestWS2812B`.
 
 If SPM is not supported, you'll need to manually download the library and its dependencies: 
 
-    wget https://raw.githubusercontent.com/uraimo/MCP3008.swift/master/Sources/MCP3008.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SwiftyGPIO.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/Presets.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SPI.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SunXi.swift  
+    wget https://raw.githubusercontent.com/uraimo/WS281x.swift/master/Sources/WS281x.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SwiftyGPIO.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/Presets.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/PWM.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SunXi.swift  
 
 And once all the files have been downloaded, create an additional file that will contain the code of your application (e.g. main.swift). When your code is ready, compile it with:
 
