@@ -7,9 +7,23 @@
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat" alt="Swift 3 compatible" /></a>
 <a href="https://raw.githubusercontent.com/uraimo/5110lcd_pcd8544.swift/master/LICENSE"><img src="http://img.shields.io/badge/license-BSD-blue.svg?style=flat" alt="License: BSD" /></a>
 </p>
- 
+
+**Not yet ready, come back in a few days**
 
 # Summary
+
+![WS2812 effect](https://giant.gfycat.com/UltimateAgileBeardeddragon.gif)
+
+...
+
+## Usage
+
+The first thing we need to do is to obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
+
+```swift
+import SwiftyGPIO
+import WS281x
+```
 
 ...
 
@@ -20,17 +34,6 @@ Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO) with
 To use this library, you'll need Swift 3.x.
 
 The example below will use a RaspberryPi 2 board but you can easily modify the example to use one the the other supported boards, a full working demo projects for the RaspberryPi2 is available in the `Examples` directory.
-
-## Usage
-
-The first thing we need to do is to obtain an instance of `SPIOutput` from SwiftyGPIO and use it to initialize the `MCP3008` object:
-
-```swift
-import SwiftyGPIO
-import WS281x
-```
-
-...
 
 ## Installation
 
