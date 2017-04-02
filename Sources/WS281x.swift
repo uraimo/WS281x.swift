@@ -38,21 +38,23 @@ public class WS281x{
 
     public init(_ pwm: PWMOutput, 
                type: WSKind
-               numElements: Int,
-               frequency: Int,
-               resetDelay: Int) {
+               numElements: Int) {
         self.pwm = pwm
         self.type = type
         self.numElements = numElements
-        self.frequency =  frequency
-        self.resetDelay = resetDelay
-        self.dutyZero = type.getDuty().0
-        self.dutyOne = type.getDuty().1
+        self.frequency =  type.getDuty().frequency
+        self.resetDelay = type.getDuty().resetDelay
+        self.dutyZero = type.getDuty().zero
+        self.dutyOne = type.getDuty().one
 
         sequence = [UInt32](repeating: 0x0, count: numElements)
         // Initialize PWM
         pwm.initPWM()
-        pwm.initPWMPattern(bytes: numElements*3, at: frequency, with: resetDelay, dutyzero: type.getDuty().0, dutyone: type.getDuty().1)
+        pwm.initPWMPattern(bytes: numElements*3, 
+                            at: type.getDuty().frequency, 
+                            with: type.getDuty().resetDelay, 
+                            dutyzero: type.getDuty().zero, 
+                            dutyone: type.getDuty().one)
     }
 
     /// Set a led using the sequence id
@@ -124,14 +126,14 @@ public enum WSKind{
     case WS2812     //T0H:0.35us T0L:0.8us, T1H:0.7us T1L:0.6us , resDelay > 50us
     case WS2811     //T0H:0.5us T0L:2.0us, T1H:1.2us T1L:1.3us , resDelay > 50us
 
-    public getDuty()->(Int,Int){
+    public getDuty() -> (zero:Int,one:Int,frequency:Int,resetDelay:Int){
         switch self{
             case WS2812B:
-                return (33,66)
+                return (33,66,800_000,55)
             case WS2812:
-                return (33,66)
+                return (33,66,800_000,55)
             case WS2811:
-                return (33,66)
+                return (33,66,800_000,55)
         }
     }
 }
