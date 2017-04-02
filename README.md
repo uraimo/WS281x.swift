@@ -14,6 +14,9 @@
 <img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led1.gif" />
 <img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led2.gif" />
 <img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led3.gif" />
+<img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led1.gif" />
+<img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led2.gif" />
+<img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led3.gif" />
 </p>
 
 # Summary
