@@ -79,7 +79,7 @@ var xoro = Xoroshiro()
 
 func ledsRandom(_ values: [UInt32]) -> [UInt32] {
     var values = values
-    for i in 0..<NUM_ELEMENTS {
+    for i in 0..<values.count {
         let r = UInt32(xoro.random64() % 254 + 1)
         let g = UInt32(xoro.random64() % 254 + 1)
         let b = UInt32(xoro.random64() % 254 + 1)
@@ -107,7 +107,7 @@ func scroll(_ values: [UInt32]) -> [UInt32] {
 
 func ledsCosine(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
     var values = values
-    for i in 0..<NUM_ELEMENTS {
+    for i in 0..<values.count {
         let center = Double(width/2) * 0.9
         let scale = 1.0 // Bigger = smaller period
         var ix = Double(i%width) - center
@@ -123,7 +123,7 @@ func ledsCosine(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
 func ledsRipple(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
     var values = values
     let time = time % 50 // Repeat every 50 frames
-    for i in 0..<NUM_ELEMENTS {
+    for i in 0..<values.count {
         let center = Double(width/2) * 0.9
         let scale = 3.5 //Bigger = smaller initial drop and thinner ripple
         var ix = Double(i%width) - center
@@ -142,7 +142,7 @@ func ledsRipple(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
 func ledsRainbow(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
     let colors:[UInt32] = [0x200000,0x201000,0x202000,0x002000,0x002020,0x000020,0x100010,0x200010]
     var values = values
-    for i in 0..<NUM_ELEMENTS {
+    for i in 0..<values.count {
         values[i] = colors[(i%width + time)%colors.count]
     }
     return values
@@ -153,25 +153,55 @@ func ledsRainbow(_ values: [UInt32], width: Int, time: Int) -> [UInt32] {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Example that uses a 8x8 matrix with the data pin connected to P18
+// If you have a strip you can still use this example, just
 
 let pwms = SwiftyGPIO.hardwarePWMs(for:.RaspberryPi2)!
 let pwm = (pwms[0]?[.P18])!
 
+let numberOfLeds = 64
+let matrixWidth = 8
 
-let w = WS281x(pwm: pwm, 
-               type: .WS2812B
-               numElements: 64,
-               frequency: 800_000,
-               resetDelay: 55)
+let w = WS281x(pwm, 
+               type: .WS2812B,
+               numElements: numberOfLeds)
 
-var initial = [UInt32](repeating:0x0, count: 64)
+var initial = [UInt32](repeating:0x0, count: numberOfLeds)
 
-//Clear
+// Clear
 w.setLeds(initial)
 w.start()
 w.wait()
 
+// Set the 10th led in the sequence (even if it's a matrix will be considered as a strip)
+w.setLed(10, r: 0xF0, g: 0, b: 0)
 
+// Let's set pixels with matrix coordinates now, you matrix could be connected differently from these two, do some test setting
+// individual pixels with setLed() to understand how the leds are connected or use the snake effect that scrolls through the sequence
+// from the beginning to the last element.
+
+// Set the led at (4,4) for matrices where each row starts with the (row-1)*width element in the sequence (Nulsom Rainbow Matrix)
+// Es.
+//  0  1  2  3
+//  4  5  6  7
+//  8  9  10 11
+//  12 13 14 15
+w.setLedAsMatrix(x: 4, y: 4, width: matrixWidth, r: 0, g: 0, b: 0xF0)
+
+// Set the led at (4,4) for matrices where each row is connetted to the last element of the preceding row (Pimoroni UnicornHat)
+// Es.
+//  3  2  1  0
+//  4  5  6  7
+//  11 10 9  8
+//  12 13 14 15
+w.setLedAsSequentialMatrix(x: 5, y: 2, width: matrixWidth, r: 0, g: 0, b: 0xF0)
+
+// Start the transmission that will program the matrix and wait
+w.start()
+w.wait()
+sleep(2)
+
+// Random colors
 var leds: [UInt32] = ledsRandom(initial)
 for i in 0...100 {
     leds = ledsRandom(leds)
@@ -179,14 +209,16 @@ for i in 0...100 {
     w.start()
 }
 
-leds = ledsRainbow(initial, width: 8, time: 0)
+// Scrolling rainbow
+leds = ledsRainbow(initial, width: matrixWidth, time: 0)
 for i in 0...100 {
     w.setLeds(leds)
     w.start()
-    leds = ledsRainbow(leds, width: 8, time: i)
+    leds = ledsRainbow(leds, width: matrixWidth, time: i)
     usleep(50_000)
 }
 
+// Snake
 leds = ledsSnake(initial)
 for i in 0...200 {
     w.setLeds(leds)
@@ -194,25 +226,27 @@ for i in 0...200 {
     leds = scroll(leds)
 }
 
-leds = ledsCosine(initial, width: 8, time: 0)
+// 2D Cosine
+leds = ledsCosine(initial, width: matrixWidth, time: 0)
 for i in 0...200 {
     w.setLeds(leds)
     w.start()
-    leds = ledsCosine(leds, width: 8, time: i)
+    leds = ledsCosine(leds, width: matrixWidth, time: i)
     usleep(50_000)
 }
 
-leds = ledsRipple(initial, width: 8, time: 0)
+// 2D ripple effect with sinc function
+leds = ledsRipple(initial, width: matrixWidth, time: 0)
 for i in 0...200 {
     w.setLeds(leds)
     w.start()
-    leds = ledsRipple(leds, width: 8, time: i)
+    leds = ledsRipple(leds, width: matrixWidth, time: i)
 }
 
-//Clear
+// Clear
 w.setLeds(initial)
 w.start()
 w.wait()
 
-
+// Final cleanup
 w.cleanup()
