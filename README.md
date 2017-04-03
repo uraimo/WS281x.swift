@@ -8,8 +8,6 @@
 <a href="https://raw.githubusercontent.com/uraimo/5110lcd_pcd8544.swift/master/LICENSE"><img src="http://img.shields.io/badge/license-BSD-blue.svg?style=flat" alt="License: BSD" /></a>
 </p>
 
-**Not yet ready, come back in a few days**
-
 <p>
 <img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led1.gif" />
 <img src="https://github.com/uraimo/SwiftyGPIO/raw/master/images/led2.gif" />
@@ -21,24 +19,94 @@
 
 # Summary
 
-...
+This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), regardless of the form in which they are sold: strips, matrices, rings, etc...
+
+You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations).
 
 ## Usage
 
-The first thing we need to do is to obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
+Suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is to obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
 
 ```swift
 import SwiftyGPIO
 import WS281x
+
+let pwms = SwiftyGPIO.hardwarePWMs(for:.RaspberryPi2)!
+let pwm = (pwms[0]?[.P18])!
+
+let numberOfLeds = 60
+
+let w = WS281x(pwm, 
+               type: .WS2812B,
+               numElements: numberOfLeds)
 ```
 
-...
+We'll need to specify the number of leds and the type of the leds we are using (either `.WS2811`, `.WS2812` or `.WS2812B`), the library will use the type to determine the correct signaling timing for these leds.
+
+Let's start clearing all the leds in the strip, setting them with the rgb color `#000000`:
+
+```swift
+var initial = [UInt32](repeating:0x0, count: numberOfLeds)
+
+w.setLeds(initial)
+
+w.start()
+w.wait()
+```
+
+With `setLeds` we are configuring the strip with an array of 60 32 bits elements that contain the pixel 24bits colors in the format `0x00RRGGBB`. Once done, we call `start()` to send the signal and then `wait()` for the configuration of the strip to complete.
+
+We can then set individual pixel along the strip:
+
+```swift
+w.setLed(10, r: 0xF0, g: 0, b: 0)
+```
+
+Or if we had a matrix we could have also used two specific additional methods that use two different 2D coordinate schemes.
+
+Your matrix could be connected differently from these two, do some test setting individual pixels with setLed() to understand how the leds are connected or use the snake effect that scrolls through the sequence from the beginning to the last element.
+
+Let's set the led at (4,4) for matrices where each row starts with the (row-1)*width element in the sequence (e.g. Nulsom Rainbow Matrix) as show here:
+```
+  0  1  2  3
+  4  5  6  7
+  8  9  10 11
+  12 13 14 15
+```
+
+In this case we'll use `setLedAsMatrix`:
+
+```swift
+w.setLedAsMatrix(x: 4, y: 4, width: matrixWidth, r: 0, g: 0, b: 0xF0)
+```
+
+Now, let0s set the led at (5,2) for matrices where each row is connetted to the last element of the preceding row (e.g. Pimoroni UnicornHat) like this:
+```
+  3  2  1  0
+  4  5  6  7
+  11 10 9  8
+  12 13 14 15
+```
+
+In this case we'll use `setLedAsSequentialMatrix`:
+
+```swift
+w.setLedAsSequentialMatrix(x: 5, y: 2, width: matrixWidth, r: 0, g: 0, b: 0xF0)
+```
+
+If neither method set the pixels of your matrix in the right position just use `setLed` to roll you own implementation or perform bulk `setLeds` (as you'll see in the example this is what I normally do too)
+
+Once you are done (or even in a `defer` block) remember to clean up all the temporary PWM settings that were needed for this library with:
+
+```swift
+w.cleanup()
+```
 
 ## Supported Boards
 
 Every board supported by [SwiftyGPIO](https://github.com/uraimo/SwiftyGPIO) with pattern-based PWM signal generator, at the moment only RaspberryPis.
 
-To use this library, you'll need Swift 3.x.
+And to use this library, you'll need Swift 3.x.
 
 The example below will use a RaspberryPi 2 board but you can easily modify the example to use one the the other supported boards, a full working demo projects for the RaspberryPi2 is available in the `Examples` directory.
 
