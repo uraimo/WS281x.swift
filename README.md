@@ -25,7 +25,7 @@ You will be able to set the color of individual pixels (with both sequential and
 
 ## Usage
 
-Suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is to obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
+Suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
 
 ```swift
 import SwiftyGPIO
@@ -41,7 +41,7 @@ let w = WS281x(pwm,
                numElements: numberOfLeds)
 ```
 
-We'll need to specify the number of leds and the type of the leds we are using (either `.WS2811`, `.WS2812` or `.WS2812B`), the library will use the type to determine the correct signaling timing for these leds.
+We'll then need to specify the number of leds and the type of the leds we are using (either `.WS2811`, `.WS2812` or `.WS2812B`), the library will use the type to determine the correct signaling timing for these leds.
 
 Let's start clearing all the leds in the strip, setting them with the rgb color `#000000`:
 
