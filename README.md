@@ -1,11 +1,11 @@
 ![WS281x](https://github.com/uraimo/WS281x.swift/raw/master/logo.png)
 
-*A Swift library for WS2812x (WS2811,WS2812,WS2812B) RGB led strips, rings, sticks, matrixes, etc...*
+*A Swift library for WS2812x/NeoPixel (WS2811,WS2812,WS2812B) RGB led strips, rings, sticks, matrixes, etc...*
 
 <p>
 <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux-only" />
 <a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat" alt="Swift 3 compatible" /></a>
-<a href="https://raw.githubusercontent.com/uraimo/5110lcd_pcd8544.swift/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
+<a href="https://raw.githubusercontent.com/uraimo/WS281x.swift/master/LICENSE"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License: MIT" /></a>
 </p>
 
 <p>
@@ -19,7 +19,7 @@
 
 # Summary
 
-This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), regardless of the form in which they are sold: strips, matrices, rings, etc...
+This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), sometimes marketed as NeoPixels, regardless of the form in which they are sold: strips, matrices, rings, etc...
 
 You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations).
 
