@@ -176,7 +176,7 @@ w.wait()
 // Set the 10th led in the sequence (even if it's a matrix will be considered as a strip)
 w.setLed(10, r: 0xF0, g: 0, b: 0)
 
-// Let's set pixels with matrix coordinates now, you matrix could be connected differently from these two, do some test setting
+// Let's set pixels with matrix coordinates now, your matrix could be connected differently from these two, do some test setting
 // individual pixels with setLed() to understand how the leds are connected or use the snake effect that scrolls through the sequence
 // from the beginning to the last element.
 
