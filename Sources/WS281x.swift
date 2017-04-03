@@ -37,7 +37,7 @@ public class WS281x{
 
 
     public init(_ pwm: PWMOutput, 
-               type: WSKind
+               type: WSKind,
                numElements: Int) {
         self.pwm = pwm
         self.type = type
@@ -63,7 +63,7 @@ public class WS281x{
     }
 
     /// Set all leds with the colors positioned as GBR 
-    public func setLeds(_ gbr: [UInt8]){
+    public func setLeds(_ gbr: [UInt32]){
         sequence = gbr
     }
 
@@ -88,7 +88,7 @@ public class WS281x{
     ///  12 13 14 15
     ///
     public func setLedAsSequentialMatrix(x: Int, y:Int, width:Int, r: UInt8, g: UInt8, b: UInt8){
-        let pos = y*width
+        var pos = y*width
         pos += (y%2 > 0) ? (width-1-x) : x
         sequence[pos] = (UInt32(r) << 16) | (UInt32(g) << 8) | (UInt32(b)) 
     }
@@ -126,13 +126,13 @@ public enum WSKind{
     case WS2812     //T0H:0.35us T0L:0.8us, T1H:0.7us T1L:0.6us , resDelay > 50us
     case WS2811     //T0H:0.5us T0L:2.0us, T1H:1.2us T1L:1.3us , resDelay > 50us
 
-    public getDuty() -> (zero:Int,one:Int,frequency:Int,resetDelay:Int){
+    public func getDuty() -> (zero:Int,one:Int,frequency:Int,resetDelay:Int){
         switch self{
-            case WS2812B:
+            case WSKind.WS2812B:
                 return (33,66,800_000,55)
-            case WS2812:
+            case WSKind.WS2812:
                 return (33,66,800_000,55)
-            case WS2811:
+            case WSKind.WS2811:
                 return (33,66,800_000,55)
         }
     }
