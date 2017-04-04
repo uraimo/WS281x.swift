@@ -131,7 +131,7 @@ The directory `Examples` contains sample projects that uses SPM, compile it and 
 
 If SPM is not supported, you'll need to manually download the library and its dependencies: 
 
-    wget https://raw.githubusercontent.com/uraimo/WS281x.swift/master/Sources/WS281x.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SwiftyGPIO.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/Presets.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/PWM.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SunXi.swift  
+    wget https://raw.githubusercontent.com/uraimo/WS281x.swift/master/Sources/WS281x.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SwiftyGPIO.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/Presets.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/PWM.swift https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/Mailbox.swift  https://raw.githubusercontent.com/uraimo/SwiftyGPIO/master/Sources/SunXi.swift  
 
 And once all the files have been downloaded, create an additional file that will contain the code of your application (e.g. main.swift). When your code is ready, compile it with:
 
@@ -139,3 +139,18 @@ And once all the files have been downloaded, create an additional file that will
 
 The compiler will create a **main** executable.
 
+## Frequently Asked Questions
+
+1. How many leds I will be able to control?
+
+The update frequency and the power consumption are the limit factors. As the number of leds grows it takes progressively more time to configure all the connected leds and the power consumption increases. While you can solve the power problem connecting the strip to an external 5V power adapter instead of using the board's 5V/GND pins, the update frequency problem is related to the timing characteristics of the WS281x protocol.
+
+You will be able to use strips with around 400-500 leds without issues, but then you'll start to see progressively diminishing refresh times that could not be appropriate for fast animations. How many leds can the library drive? This depends on how much sequential memory the VideoCore subsystem is able to allocate, there have been reports of people using similar libraries being able to control more than 3000 leds from a RaspberryPi1.
+
+2. Why the library does not appear to work when I'm using the RaspberryPI audio output?
+
+The PWM hardware that this library uses is shared with the audio output, you can't use them both simultaneously.
+
+You could need (ATM, not needed for Raspbian and Ubuntu) to black-list the audio module from `/etc/modprobe.d/snd-blacklist.conf`:
+
+    blacklist snd_bcm2835
