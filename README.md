@@ -25,7 +25,9 @@ You will be able to set the color of individual pixels (with both sequential and
 
 ## Usage
 
-Suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
+First of all an hardware note, WS281x leds are 3-pins 5V devices (Vcc,DataIN,GND) but most of the times can tollerate a 3.3V DataIN signal like the one produced by the RaspberryPi (and other ARM boards) gpio pins. If you notice that your leds are flickering or not too bright, you could need a level shifter/converter/translator for you data pin. There are a lot of different ways (with different performance) to translate a 3.3V signal to a 5V one, but the most cost effective way to solve this specific problem is maybe just to buy a simple level converter [like this one from SparkFun](https://www.sparkfun.com/products/12009). It works perfectly and you just need to solder a pin header and you are ready to go.
+
+Now, for the software side, suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
 
 ```swift
 import SwiftyGPIO
