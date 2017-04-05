@@ -21,7 +21,7 @@
 
 This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), sometimes marketed as NeoPixels, regardless of the form in which they are sold: strips, matrices, rings, etc...
 
-You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations).
+You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations). Click [here](https://fat.gfycat.com/HospitableFickleJoey.gif) or [here](https://giant.gfycat.com/UltimateAgileBeardeddragon.gif) for two real-time gifs that show what you could do with this library.
 
 ## Usage
 
