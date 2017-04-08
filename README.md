@@ -1,6 +1,6 @@
 ![WS281x](https://github.com/uraimo/WS281x.swift/raw/master/logo.png)
 
-*A Swift library for WS2812x/NeoPixel (WS2811,WS2812,WS2812B) RGB led strips, rings, sticks, matrices, etc...*
+*A Swift library for WS2812x/NeoPixel (WS2811,WS2812,WS2812B,WS2813) RGB led strips, rings, sticks, matrices, etc...*
 
 <p>
 <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux-only" />

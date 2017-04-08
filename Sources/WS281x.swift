@@ -122,18 +122,21 @@ public class WS281x{
 }
 
 public enum WSKind{
-    case WS2812B    //T0H:0.35us T0L:0.9us, T1H:0.9us T1L:0.35us , resDelay > 50us  
-    case WS2812     //T0H:0.35us T0L:0.8us, T1H:0.7us T1L:0.6us , resDelay > 50us
     case WS2811     //T0H:0.5us T0L:2.0us, T1H:1.2us T1L:1.3us , resDelay > 50us
+    case WS2812     //T0H:0.35us T0L:0.8us, T1H:0.7us T1L:0.6us , resDelay > 50us
+    case WS2812B    //T0H:0.35us T0L:0.9us, T1H:0.9us T1L:0.35us , resDelay > 50us  
+    case WS2813     //T0H:0.35us T0L:0.9us, T1H:0.9us T1L:0.35us , resDelay > 250us ?  
 
     public func getDuty() -> (zero:Int,one:Int,frequency:Int,resetDelay:Int){
         switch self{
-            case WSKind.WS2812B:
+            case WSKind.WS2811:
                 return (33,66,800_000,55)
             case WSKind.WS2812:
                 return (33,66,800_000,55)
-            case WSKind.WS2811:
+            case WSKind.WS2812B:
                 return (33,66,800_000,55)
+            case WSKind.WS2813:
+                return (33,66,800_000,255)
         }
     }
 }
