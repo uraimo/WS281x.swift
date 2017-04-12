@@ -1,6 +1,6 @@
 ![WS281x](https://github.com/uraimo/WS281x.swift/raw/master/logo.png)
 
-*A Swift library for WS2812x/NeoPixel (WS2811,WS2812,WS2812B,WS2813) RGB led strips, rings, sticks, matrices and more*
+*A Swift library for WS281x/NeoPixel (WS2811,WS2812,WS2812B,WS2813) RGB led strips, rings, sticks, matrices and more*
 
 <p>
 <img src="https://img.shields.io/badge/os-linux-green.svg?style=flat" alt="Linux-only" />
@@ -21,11 +21,13 @@
 
 This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), sometimes marketed as NeoPixels, regardless of the form in which they are sold: strips, matrices, rings, etc...
 
-You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations). Click [here](https://fat.gfycat.com/HospitableFickleJoey.gif) or [here](https://giant.gfycat.com/UltimateAgileBeardeddragon.gif) for two real-time gifs that show what you could do with this library.
+You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations). Click [here](https://fat.gfycat.com/HospitableFickleJoey.gif) or [here](https://giant.gfycat.com/UltimateAgileBeardeddragon.gif) for two real-time gifs that show an example what you can do with this library.
 
 ## Usage
 
-First of all an hardware note, WS281x leds are 3-pins 5V devices (Vcc,DataIN,GND) but most of the times can tollerate a 3.3V DataIN signal like the one produced by the RaspberryPi (and other ARM boards) gpio pins. If you notice that your leds are flickering or not too bright, you could need a level shifter/converter/translator for you data pin. There are a lot of different ways (with different performance) to translate a 3.3V signal to a 5V one, but the most cost effective way to solve this specific problem is maybe just to buy a simple level converter [like this one from SparkFun](https://www.sparkfun.com/products/12009). It works perfectly and you just need to solder a pin header and you are ready to go.
+First of all an hardware note, WS281x leds are 3-pins 5V devices (Vcc,DataIN,GND) but most of the times can tollerate a 3.3V DataIN signal like the one produced by the RaspberryPi's gpio pins (and other ARM board's gpios).
+
+If you notice that your leds are flickering or not too bright while connecting them directly to a gpio, you could need a level shifter/converter/translator for you data pin. There are *a lot* of different ways (with different performance) to translate a 3.3V signal to a 5V one, but the most cost effective way to solve this specific problem is maybe just to buy a simple level converter [like this one from SparkFun](https://www.sparkfun.com/products/12009). It works perfectly and you just need to solder a pin header and you are ready to go.
 
 Now, for the software side, suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
 
@@ -143,16 +145,20 @@ The compiler will create a **main** executable.
 
 ## Frequently Asked Questions
 
-1. How many leds I will be able to control?
+**1. How many leds I will be able to control?**
 
-The update frequency and the power consumption are the limit factors. As the number of leds grows it takes progressively more time to configure all the connected leds and the power consumption increases. While you can solve the power problem connecting the strip to an external 5V power adapter instead of using the board's 5V/GND pins, the update frequency problem is related to the timing characteristics of the WS281x protocol.
+The update frequency and the power consumption are the limiting factors. As the number of leds grows, it takes progressively more time to configure all the connected leds and the power consumption increases. While you can solve the power problem connecting the strip to an external 5V power adapter instead of using the board's 5V/GND pins, the update frequency problem is related to the timing characteristics of the WS281x protocol.
 
 You will be able to use strips with around 400-500 leds without issues, but then you'll start to see progressively diminishing refresh times that could not be appropriate for fast animations. How many leds can the library drive? This depends on how much sequential memory the VideoCore subsystem is able to allocate, there have been reports of people using similar libraries being able to control more than 3000 leds from a RaspberryPi1.
 
-2. Why the library does not appear to work when I'm using the RaspberryPI audio output?
+**2. Why the library does not appear to work when I'm using the RaspberryPI audio output?**
 
-The PWM hardware that this library uses is shared with the audio output, you can't use them both simultaneously.
+The PWM hardware that this library uses is shared with the audio output, you can't use them both simultaneously and some OSes could enable the audio port by default.
 
-You could need (ATM, not needed for Raspbian and Ubuntu) to black-list the audio module from `/etc/modprobe.d/snd-blacklist.conf`:
+You could need (ATM, not needed for Raspbian and Ubuntu) to black-list the audio module adding to `/etc/modprobe.d/snd-blacklist.conf`:
 
     blacklist snd_bcm2835
+    
+**3. Does this work with APA102/DotStar leds?**
+
+No, since APA102 leds work with a standard SPI connection.
