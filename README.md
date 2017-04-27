@@ -19,7 +19,7 @@
 
 # Summary
 
-This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), sometimes marketed as NeoPixels, regardless of the form in which they are sold: strips, matrices, rings, etc...
+This library simplifies the configuration of series of WS281x leds (WS2811, WS2812, WS281x), sometimes marketed as NeoPixels (or NeoMatrix for led matrices), regardless of the form in which they are sold: strips, matrices, rings, etc...
 
 You will be able to set the color of individual pixels (with both sequential and matrix coordinates) or set them in bulk with a single call (faster, recommended for smoother animations). Click [here](https://fat.gfycat.com/HospitableFickleJoey.gif) or [here](https://giant.gfycat.com/UltimateAgileBeardeddragon.gif) for two real-time gifs that show an example what you can do with this library.
 
@@ -68,7 +68,7 @@ w.setLed(10, r: 0xF0, g: 0, b: 0)
 
 Or if we had a matrix we could have also used two specific additional methods that use two different 2D coordinate schemes.
 
-Your matrix could be connected differently from these two, do some test setting individual pixels with setLed() to understand how the leds are connected or use the snake effect that scrolls through the sequence from the beginning to the last element.
+Your matrix could be connected differently from these two, do some test setting individual pixels with setLed() to understand how the leds are connected or use the snake effect that scrolls through the sequence from the beginning to the last element. 
 
 Let's set the led at (4,4) for matrices where each row starts with the (row-1)*width element in the sequence (e.g. Nulsom Rainbow Matrix) as show here:
 ```
@@ -99,6 +99,8 @@ w.setLedAsSequentialMatrix(x: 5, y: 2, width: matrixWidth, r: 0, g: 0, b: 0xF0)
 ```
 
 If neither method set the pixels of your matrix in the right position just use `setLed` to roll you own implementation or perform bulk `setLeds` (as you'll see in the example this is what I normally do too)
+
+Adafruit, as usual, [has a very detailed post](https://learn.adafruit.com/adafruit-neopixel-uberguide/neomatrix-library) on leds arragement in NeoPixel matrices.
 
 Once you are done (or even in a `defer` block) remember to clean up all the temporary PWM settings that were needed for this library with:
 
