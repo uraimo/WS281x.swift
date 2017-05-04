@@ -166,3 +166,9 @@ You could need (ATM, not needed for Raspbian and Ubuntu) to black-list the audio
 **3. Does this work with APA102/DotStar leds?**
 
 No, since APA102 leds work with a standard SPI connection.
+
+**4. Why two enums values for the WS2812B**
+
+WorldSemi released an updated version of the WS2812B at the beginning of 2017, that requires a longer reset delay, for more information [read this](https://blog.adafruit.com/2017/05/03/psa-the-ws2812b-rgb-led-has-been-revised-will-require-code-tweak/). If your WS2812 leds don't appear to work, try selecting the enum value for the newer model.
+
+
