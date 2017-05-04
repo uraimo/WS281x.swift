@@ -29,6 +29,8 @@ First of all an hardware note, WS281x leds are 3-pins 5V devices (Vcc,DataIN,GND
 
 If you notice that your leds are flickering or not too bright while connecting them directly to a gpio, you could need a level shifter/converter/translator for you data pin. There are *a lot* of different ways (with different performance) to translate a 3.3V signal to a 5V one, but the most cost effective way to solve this specific problem is maybe just to buy a simple level converter [like this one from SparkFun](https://www.sparkfun.com/products/12009). It works perfectly and you just need to solder a pin header and you are ready to go.
 
+For more hardware information on WS281x/NeoPixel leds, check out the [Adafruit's Überguide](https://learn.adafruit.com/adafruit-neopixel-uberguide/overview).
+
 Now, for the software side, suppose we are using a strip with 60 WS2812B leds, the first thing we need to do is obtain an instance of `PWMOutput` from SwiftyGPIO and use it to initialize the `WS281x` object:
 
 ```swift
