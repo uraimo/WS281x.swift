@@ -102,6 +102,8 @@ w.setLedAsSequentialMatrix(x: 5, y: 2, width: matrixWidth, r: 0, g: 0, b: 0xF0)
 
 If neither method set the pixels of your matrix in the right position just use `setLed` to roll you own implementation or perform bulk `setLeds` (as you'll see in the example this is what I normally do too)
 
+Remember to always call `start()` once you have invoked one of the `setLed*` methods to send the signal that will configure the sequence of WS2812 leds and to use `wait()` to wait for the actuation of the configuration to complete (needed only when you want to be sure that the configuration will be applied in its entirety, e.g. when clearing the leds before new effects, or when you want to shut down the led strip cleanly before exiting).
+
 Adafruit, as usual, [has a very detailed post](https://learn.adafruit.com/adafruit-neopixel-uberguide/neomatrix-library) on leds arragement in NeoPixel matrices.
 
 Once you are done (or even in a `defer` block) remember to clean up all the temporary PWM settings that were needed for this library with:
@@ -170,5 +172,3 @@ No, since APA102 leds work with a standard SPI connection.
 **4. Why two enums values for the WS2812B**
 
 WorldSemi released an updated version of the WS2812B at the beginning of 2017, that requires a longer reset delay, for more information [read this](https://blog.adafruit.com/2017/05/03/psa-the-ws2812b-rgb-led-has-been-revised-will-require-code-tweak/). If your WS2812 leds don't appear to work, try selecting the enum value for the newer model.
-
-
