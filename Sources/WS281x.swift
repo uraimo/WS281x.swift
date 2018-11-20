@@ -144,7 +144,7 @@ public enum WSKind{
                 return (33,66,800_000,55)
             case WSKind.WS2813:
                 return (33,66,800_000,255)
-            case WSKind.WS2813S:
+            case WSKind.WS2813B:
                 return (30,70,800_000,280)
         }
     }
